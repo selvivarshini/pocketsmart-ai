@@ -1,0 +1,163 @@
+/* PocketSmart AI - Floating Cartoon Effects & Illustrated Field Accents */
+.auth-visual {
+  position: relative;
+  overflow: hidden;
+}
+
+.app-shell {
+  position: relative;
+  isolation: isolate;
+  background: transparent;
+}
+
+.app-shell::before,
+.app-shell::after {
+  content: "";
+  position: fixed;
+  inset: 72px 0 0 256px;
+  pointer-events: none;
+  z-index: 0;
+  clip-path: polygon(0 28%, 12% 22%, 25% 27%, 39% 18%, 53% 25%, 67% 17%, 82% 24%, 100% 16%, 100% 100%, 0 100%);
+  animation: liquid-current 20s ease-in-out infinite alternate;
+}
+
+.app-shell::before {
+  background: linear-gradient(145deg, rgba(199, 243, 107, 0.16), rgba(112, 190, 177, 0.12) 48%, rgba(255, 255, 255, 0.14));
+}
+
+.app-shell::after {
+  background: linear-gradient(35deg, rgba(112, 190, 177, 0.1), rgba(235, 207, 139, 0.12) 55%, rgba(255, 255, 255, 0.06));
+  clip-path: polygon(0 43%, 13% 35%, 27% 40%, 42% 32%, 58% 39%, 73% 31%, 87% 38%, 100% 30%, 100% 100%, 0 100%);
+  animation-duration: 26s;
+  animation-delay: -8s;
+}
+
+.app-cartoon-scene {
+  position: fixed;
+  inset: 72px 0 0 256px;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.app-cartoon-scene img {
+  position: absolute;
+  width: clamp(48px, 5.5vw, 72px);
+  height: auto;
+  opacity: 0.28;
+  filter: drop-shadow(0 8px 12px rgba(20, 45, 30, 0.12));
+  animation: cartoon-drift 6s ease-in-out infinite;
+}
+
+.app-float-home { top: 8%; right: 4%; }
+.app-float-party { top: 44%; right: 6%; width: clamp(40px, 4.5vw, 60px) !important; animation-name: cartoon-bob; animation-delay: -2s; }
+.app-float-budget { bottom: 8%; left: 6%; animation-delay: -3.2s; }
+.app-float-jewel { bottom: 25%; right: 22%; width: clamp(38px, 4.5vw, 56px) !important; animation-name: cartoon-bob; animation-delay: -1s; }
+
+.cartoon-scene {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.cartoon-scene img {
+  position: absolute;
+  width: clamp(52px, 6.5vw, 88px);
+  height: auto;
+  filter: drop-shadow(0 12px 16px rgba(0, 0, 0, 0.22));
+  animation: cartoon-drift 6s ease-in-out infinite;
+}
+
+.float-home { top: 15%; right: 12%; animation-delay: -1.2s; }
+.float-party { top: 38%; right: 26%; width: clamp(42px, 5vw, 66px) !important; animation-name: cartoon-bob; animation-delay: -3s; }
+.float-budget { bottom: 16%; right: 9%; animation-delay: -4s; }
+.float-jewel { top: 66%; right: 36%; width: clamp(40px, 5vw, 62px) !important; animation-name: cartoon-bob; animation-delay: -2s; }
+
+.illustrated-field {
+  position: relative;
+}
+
+.illustrated-field input,
+.illustrated-field select {
+  padding-right: 48px;
+}
+
+.field-sticker {
+  position: absolute;
+  right: 14px;
+  top: 30px;
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.field-sticker img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.planner-art img {
+  display: block;
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  filter: drop-shadow(0 3px 4px rgba(20, 40, 25, 0.12));
+  animation: cartoon-bob 4s ease-in-out infinite;
+}
+
+.party-theme .planner-art img { animation-delay: -1.2s; }
+.jewel-theme .planner-art img { animation-delay: -2.4s; }
+
+@keyframes cartoon-drift {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(-4deg); }
+  50% { transform: translate3d(0, -16px, 0) rotate(5deg); }
+}
+
+@keyframes cartoon-bob {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(4deg); }
+  50% { transform: translate3d(0, 12px, 0) rotate(-6deg); }
+}
+
+@keyframes liquid-current {
+  0% {
+    clip-path: polygon(0 28%, 12% 22%, 25% 27%, 39% 18%, 53% 25%, 67% 17%, 82% 24%, 100% 16%, 100% 100%, 0 100%);
+    transform: translate3d(-1%, 0, 0) scale(1.01);
+  }
+  100% {
+    clip-path: polygon(0 21%, 13% 27%, 26% 18%, 41% 25%, 56% 17%, 72% 24%, 86% 15%, 100% 22%, 100% 100%, 0 100%);
+    transform: translate3d(1%, -1%, 0) scale(1.03);
+  }
+}
+
+@media (max-width: 768px) {
+  .app-shell::before,
+  .app-shell::after {
+    inset: 64px 0 0;
+  }
+  .app-cartoon-scene {
+    inset: 64px 0 0;
+  }
+  .app-cartoon-scene img {
+    opacity: 0.16;
+  }
+  .app-float-home { top: 4%; right: 4%; width: 42px; }
+  .app-float-party { top: 42%; right: 4%; width: 36px !important; }
+  .app-float-budget { bottom: 6%; left: 4%; width: 38px; }
+  .app-float-jewel { bottom: 24%; right: 10%; width: 36px !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cartoon-scene img,
+  .app-cartoon-scene img,
+  .planner-art img,
+  .app-shell::before,
+  .app-shell::after {
+    animation: none !important;
+  }
+}

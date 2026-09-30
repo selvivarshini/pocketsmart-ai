@@ -1,0 +1,641 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Authentication Screen -->
+<div id="authScreen" class="auth-screen">
+  <div class="auth-visual">
+    <div class="brand brand-light">
+      <span class="brand-mark">P</span>
+      <span>PocketSmart <b>AI</b></span>
+    </div>
+
+    <!-- Cartoon floating emoji scene -->
+    <div class="cartoon-scene" aria-hidden="true">
+      <img class="float-home" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/72x72/1f3e0.png" alt="">
+      <img class="float-party" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/72x72/1f389.png" alt="">
+      <img class="float-budget" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/72x72/1f4b0.png" alt="">
+      <img class="float-jewel" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/72x72/1f48e.png" alt="">
+    </div>
+
+    <div class="auth-hero">
+      <span class="eyebrow">AI-POWERED BUDGET PLANNING</span>
+      <h1>Make every rupee<br><span>work smarter.</span></h1>
+      <p>Plan your home interior, party celebrations, or jewelry styling with intelligent structured recommendations designed around your budget limits.</p>
+      <div class="auth-pills">
+        <span>₹ Budget Aware</span>
+        <span>✦ Google Gemini AI</span>
+        <span>🛡 Local Privacy First</span>
+        <span>↗ Smart Fallback Engine</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="auth-panel">
+    <div class="auth-card">
+      <div class="auth-mobile-brand brand">
+        <span class="brand-mark">P</span>
+        <span>PocketSmart <b>AI</b></span>
+      </div>
+
+      <div class="auth-tabs" role="tablist">
+        <button class="auth-tab active" data-auth="login" role="tab" aria-selected="true">Sign In</button>
+        <button class="auth-tab" data-auth="register" role="tab" aria-selected="false">Create Account</button>
+      </div>
+
+      <!-- Sign In Form -->
+      <form id="loginForm" class="auth-form">
+        <div>
+          <h2>Welcome back</h2>
+          <p class="muted">Continue your smart budget planning.</p>
+        </div>
+        <label>
+          Email address
+          <input id="loginEmail" type="email" required placeholder="you@example.com" autocomplete="email">
+        </label>
+        <label>
+          Password
+          <input id="loginPassword" type="password" required placeholder="••••••••" autocomplete="current-password">
+        </label>
+        <button class="primary-btn full" type="submit">Sign in <span>→</span></button>
+        <p class="form-note">Demo authentication safely manages your account in local browser storage.</p>
+      </form>
+
+      <!-- Registration Form -->
+      <form id="registerForm" class="auth-form hidden">
+        <div>
+          <h2>Create your account</h2>
+          <p class="muted">Start planning with AI in seconds.</p>
+        </div>
+        <label>
+          Full name
+          <input id="registerName" type="text" required placeholder="Your full name" autocomplete="name">
+        </label>
+        <label>
+          Email address
+          <input id="registerEmail" type="email" required placeholder="you@example.com" autocomplete="email">
+        </label>
+        <label>
+          Password
+          <input id="registerPassword" type="password" minlength="6" required placeholder="At least 6 characters" autocomplete="new-password">
+        </label>
+        <button class="primary-btn full" type="submit">Create account <span>→</span></button>
+        <p class="form-note">Your account profile stays isolated on your device.</p>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Main Application Shell -->
+<div id="appShell" class="app-shell hidden">
+  <!-- Subtle decorative floating elements -->
+  <div class="app-cartoon-scene" aria-hidden="true">
+    <img class="app-float-home" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/72x72/1f3e0.png" alt="">
+    <img class="app-float-party" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/72x72/1f389.png" alt="">
+    <img class="app-float-budget" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/72x72/1f4b0.png" alt="">
+    <img class="app-float-jewel" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/72x72/1f48e.png" alt="">
+  </div>
+
+  <!-- Left Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-top">
+      <div class="brand">
+        <span class="brand-mark">P</span>
+        <span>PocketSmart <b>AI</b></span>
+      </div>
+      <button id="mobileClose" class="icon-btn mobile-only" aria-label="Close navigation">×</button>
+    </div>
+
+    <div class="sidebar-label">WORKSPACE</div>
+    <nav>
+      <button class="nav-item active" data-page="dashboard"><span>⌂</span> Overview</button>
+      <button class="nav-item" data-page="homePlanner"><span>⊞</span> Home Planner</button>
+      <button class="nav-item" data-page="partyPlanner"><span>✦</span> Party Planner</button>
+      <button class="nav-item" data-page="jewelryPlanner"><span>◇</span> Jewelry Planner</button>
+      <button class="nav-item" data-page="history"><span>◷</span> Plan History</button>
+    </nav>
+
+    <div class="sidebar-label">RESOURCES</div>
+    <nav>
+      <button class="nav-item" data-page="howItWorks"><span>?</span> How It Works</button>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <div class="ai-status" id="aiStatusBox">
+        <span class="status-dot" id="statusDot"></span>
+        <div>
+          <strong id="statusTitle">Gemini AI</strong>
+          <small id="statusSubtitle">Checking connection...</small>
+        </div>
+      </div>
+      <button id="logoutBtn" class="logout-btn">↪ Sign out</button>
+    </div>
+  </aside>
+
+  <!-- Main Content Stage -->
+  <main class="main">
+    <!-- Topbar -->
+    <header class="topbar">
+      <button id="mobileMenu" class="icon-btn mobile-only" aria-label="Open navigation">☰</button>
+      <div class="breadcrumb" id="breadcrumb">Overview</div>
+      <div class="top-actions">
+        <span class="date-label" id="todayLabel"></span>
+        <div class="avatar" id="userAvatar">U</div>
+      </div>
+    </header>
+
+    <!-- SECTION 1: DASHBOARD / OVERVIEW -->
+    <section id="page-dashboard" class="page active-page">
+      <div class="page-heading">
+        <div>
+          <span class="eyebrow">YOUR MONEY WORKSPACE</span>
+          <h1>Good to see you, <span id="welcomeName">there</span>.</h1>
+          <p>Turn a budget into a plan you can actually use.</p>
+        </div>
+        <button class="primary-btn" data-page="homePlanner">+ New plan</button>
+      </div>
+
+      <!-- Dynamic Statistics Cards -->
+      <div class="stat-grid">
+        <div class="stat-card accent-card">
+          <div class="stat-icon">◫</div>
+          <span>Plans created</span>
+          <strong id="statPlans">0</strong>
+          <small>Across all planners</small>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">₹</div>
+          <span>Total planned</span>
+          <strong id="statBudget">₹0</strong>
+          <small>Your saved budgets</small>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">↘</div>
+          <span>Remaining</span>
+          <strong id="statRemaining">₹0</strong>
+          <small>Available in latest plan</small>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">✦</div>
+          <span>Most used</span>
+          <strong id="statMost">—</strong>
+          <small>Your favourite planner</small>
+        </div>
+      </div>
+
+      <!-- Smart Planners Grid & Recent Activity -->
+      <div class="dashboard-grid">
+        <div class="panel planner-launch">
+          <div class="panel-head">
+            <div>
+              <span class="eyebrow">SMART PLANNERS</span>
+              <h2>What are you planning?</h2>
+            </div>
+            <span class="panel-count">03 planners</span>
+          </div>
+          <div class="planner-cards">
+            <button class="planner-card home-theme" data-page="homePlanner">
+              <div class="planner-art">
+                <img src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/72x72/1f3e0.png" alt="">
+              </div>
+              <div>
+                <h3>Home Interior</h3>
+                <p>Furniture, lighting, fans & room essentials</p>
+              </div>
+              <span>→</span>
+            </button>
+
+            <button class="planner-card party-theme" data-page="partyPlanner">
+              <div class="planner-art">
+                <img src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/72x72/1f389.png" alt="">
+              </div>
+              <div>
+                <h3>Party & Events</h3>
+                <p>Venue, guests, catering, decor & entertainment</p>
+              </div>
+              <span>→</span>
+            </button>
+
+            <button class="planner-card jewel-theme" data-page="jewelryPlanner">
+              <div class="planner-art">
+                <img src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/72x72/1f48e.png" alt="">
+              </div>
+              <div>
+                <h3>Jewelry Match</h3>
+                <p>Occasion, style & optional outfit-aware picks</p>
+              </div>
+              <span>→</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="panel recent-panel">
+          <div class="panel-head">
+            <div>
+              <span class="eyebrow">ACTIVITY</span>
+              <h2>Recent plans</h2>
+            </div>
+            <button class="text-btn" data-page="history">View all →</button>
+          </div>
+          <div id="recentPlans" class="recent-list">
+            <div class="empty-state">No plans yet.<br>Start your first smart plan.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Budget Distribution Snapshot -->
+      <div class="panel budget-overview">
+        <div class="panel-head">
+          <div>
+            <span class="eyebrow">BUDGET SNAPSHOT</span>
+            <h2>Where your money goes</h2>
+          </div>
+        </div>
+        <div id="budgetBreakdown" class="breakdown-empty">Create a plan to see your budget distribution.</div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: HOME INTERIOR PLANNER -->
+    <section id="page-homePlanner" class="page">
+      <div class="page-heading compact">
+        <div>
+          <span class="eyebrow">HOME INTERIOR PLANNER</span>
+          <h1>Build a home interior plan.</h1>
+          <p>Tell PocketSmart what rooms and items you need and set a comfortable budget limit.</p>
+        </div>
+      </div>
+
+      <form id="homeForm" class="planner-layout">
+        <div class="panel form-panel">
+          <div class="form-section">
+            <span class="step">01</span>
+            <div>
+              <h2>Your Budget</h2>
+              <p class="muted">Set the maximum amount you want to spend (₹).</p>
+            </div>
+          </div>
+          <label class="illustrated-field">
+            Budget (₹)
+            <input id="homeBudget" type="number" min="1" step="1000" required placeholder="e.g. 150000">
+            <span class="field-sticker" aria-hidden="true">
+              <img src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/72x72/1f4b0.png" alt="">
+            </span>
+          </label>
+
+          <div class="form-section">
+            <span class="step">02</span>
+            <div>
+              <h2>Target Rooms</h2>
+              <p class="muted">Select all rooms you want to decorate or furnish.</p>
+            </div>
+          </div>
+          <div class="choice-grid" id="homeRooms">
+            <label class="choice"><input type="checkbox" value="Living Room" checked><span>Living Room</span></label>
+            <label class="choice"><input type="checkbox" value="Bedroom" checked><span>Bedroom</span></label>
+            <label class="choice"><input type="checkbox" value="Kitchen"><span>Kitchen</span></label>
+            <label class="choice"><input type="checkbox" value="Dining Room"><span>Dining Room</span></label>
+            <label class="choice"><input type="checkbox" value="Study Room"><span>Study Room</span></label>
+            <label class="choice"><input type="checkbox" value="Balcony"><span>Balcony</span></label>
+          </div>
+
+          <div class="form-section">
+            <span class="step">03</span>
+            <div>
+              <h2>Key Essentials</h2>
+              <p class="muted">Approximate item counts you plan to procure.</p>
+            </div>
+          </div>
+          <div class="field-grid">
+            <label class="illustrated-field">
+              Lights / Fixtures
+              <input id="homeLights" type="number" min="0" value="4">
+              <span class="field-sticker" aria-hidden="true">
+                <img src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/72x72/1f4a1.png" alt="">
+              </span>
+            </label>
+            <label class="illustrated-field">
+              Ceiling Fans
+              <input id="homeFans" type="number" min="0" value="2">
+              <span class="field-sticker" aria-hidden="true">
+                <img src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/72x72/1f32c.png" alt="">
+              </span>
+            </label>
+            <label class="illustrated-field">
+              Furniture Pieces
+              <input id="homeFurniture" type="number" min="0" value="3">
+              <span class="field-sticker" aria-hidden="true">
+                <img src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/72x72/1fa91.png" alt="">
+              </span>
+            </label>
+            <label class="illustrated-field">
+              Dining Tables
+              <input id="homeDining" type="number" min="0" value="1">
+              <span class="field-sticker" aria-hidden="true">
+                <img src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/72x72/1f37d.png" alt="">
+              </span>
+            </label>
+          </div>
+
+          <label>
+            Additional notes or aesthetic preferences
+            <textarea id="homeNotes" rows="3" placeholder="Minimalist Scandinavian, warm teak wood accents, smart lighting..."></textarea>
+          </label>
+
+          <button class="primary-btn full" type="submit">
+            Generate AI Home Plan <span>✦</span>
+          </button>
+        </div>
+
+        <div class="panel planner-info">
+          <div class="info-orb">⌂</div>
+          <span class="eyebrow">AI BUDGET ARCHITECT</span>
+          <h2>Spend with a plan, not guesswork.</h2>
+          <p>PocketSmart divides your budget across electricals, modular woodwork, and finishing touches while keeping a safety contingency.</p>
+          <div class="mini-rule">
+            <span>Room Aware</span>
+            <span>Category Based</span>
+            <span>Gemini Powered</span>
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <!-- SECTION 3: PARTY / EVENT PLANNER -->
+    <section id="page-partyPlanner" class="page">
+      <div class="page-heading compact">
+        <div>
+          <span class="eyebrow">EVENT & CELEBRATION PLANNER</span>
+          <h1>Plan the celebration.</h1>
+          <p>Balance guest numbers, venue, catering, decor and entertainment without exceeding budget.</p>
+        </div>
+      </div>
+
+      <form id="partyForm" class="planner-layout">
+        <div class="panel form-panel">
+          <div class="form-section">
+            <span class="step">01</span>
+            <div>
+              <h2>Event Basics</h2>
+              <p class="muted">Specify your total spending limit and estimated guest count.</p>
+            </div>
+          </div>
+          <div class="field-grid">
+            <label class="illustrated-field">
+              Budget (₹)
+              <input id="partyBudget" type="number" min="1" step="500" required placeholder="e.g. 50000">
+              <span class="field-sticker" aria-hidden="true">
+                <img src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/72x72/1f4b0.png" alt="">
+              </span>
+            </label>
+            <label class="illustrated-field">
+              Guest Count
+              <input id="partyGuests" type="number" min="1" required placeholder="e.g. 40">
+              <span class="field-sticker" aria-hidden="true">
+                <img src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/72x72/1f465.png" alt="">
+              </span>
+            </label>
+          </div>
+
+          <div class="field-grid">
+            <label class="illustrated-field">
+              Event Type
+              <select id="partyType">
+                <option value="Birthday">Birthday</option>
+                <option value="Wedding">Wedding</option>
+                <option value="Engagement">Engagement</option>
+                <option value="Anniversary">Anniversary</option>
+                <option value="College Event">College Event</option>
+                <option value="Corporate Event">Corporate Event</option>
+                <option value="Other">Other</option>
+              </select>
+              <span class="field-sticker" aria-hidden="true">
+                <img src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/72x72/1f389.png" alt="">
+              </span>
+            </label>
+            <label class="illustrated-field">
+              Venue
+              <select id="partyVenue">
+                <option value="Home">Home</option>
+                <option value="Hall">Hall / Banquet</option>
+                <option value="Outdoor">Outdoor / Lawn</option>
+                <option value="Restaurant">Restaurant</option>
+                <option value="Hotel">Hotel</option>
+                <option value="Other">Other</option>
+              </select>
+              <span class="field-sticker" aria-hidden="true">
+                <img src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/72x72/1f4cd.png" alt="">
+              </span>
+            </label>
+          </div>
+
+          <div class="form-section">
+            <span class="step">02</span>
+            <div>
+              <h2>Budget Priorities</h2>
+              <p class="muted">Check the services you want allocated from the budget.</p>
+            </div>
+          </div>
+          <div class="choice-grid three">
+            <label class="choice">
+              <input type="checkbox" id="partyCatering" checked>
+              <span>Catering & Food</span>
+            </label>
+            <label class="choice">
+              <input type="checkbox" id="partyDecor" checked>
+              <span>Decoration</span>
+            </label>
+            <label class="choice">
+              <input type="checkbox" id="partyEntertainment" checked>
+              <span>Entertainment</span>
+            </label>
+          </div>
+
+          <label>
+            Special event notes or dietary requests
+            <textarea id="partyNotes" rows="3" placeholder="Vegetarian buffet, sunset rooftop cocktail theme, acoustic music..."></textarea>
+          </label>
+
+          <button class="primary-btn full" type="submit">
+            Generate AI Party Plan <span>✦</span>
+          </button>
+        </div>
+
+        <div class="panel planner-info party-info">
+          <div class="info-orb">✦</div>
+          <span class="eyebrow">AI EVENT ADVISOR</span>
+          <h2>Make room for memorable moments.</h2>
+          <p>Your guest count and service priorities balance the cost per plate with visual impact, ensuring an unforgettable celebration.</p>
+          <div class="mini-rule">
+            <span>Per-Guest Ratio</span>
+            <span>Venue Tuned</span>
+            <span>Zero Overspending</span>
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <!-- SECTION 4: JEWELRY RECOMMENDATION PLANNER -->
+    <section id="page-jewelryPlanner" class="page">
+      <div class="page-heading compact">
+        <div>
+          <span class="eyebrow">JEWELRY RECOMMENDATION PLANNER</span>
+          <h1>Find your finishing piece.</h1>
+          <p>Set your budget, occasion and style. Upload an outfit photo for multimodal Gemini aesthetic matching.</p>
+        </div>
+      </div>
+
+      <form id="jewelryForm" class="planner-layout">
+        <div class="panel form-panel">
+          <div class="form-section">
+            <span class="step">01</span>
+            <div>
+              <h2>Budget & Occasion</h2>
+              <p class="muted">Define your style criteria and spending boundary.</p>
+            </div>
+          </div>
+          <label class="illustrated-field">
+            Budget (₹)
+            <input id="jewelryBudget" type="number" min="1" step="500" required placeholder="e.g. 35000">
+            <span class="field-sticker" aria-hidden="true">
+              <img src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/72x72/1f4b0.png" alt="">
+            </span>
+          </label>
+
+          <div class="field-grid">
+            <label class="illustrated-field">
+              Occasion
+              <select id="jewelryOccasion">
+                <option value="Wedding">Wedding</option>
+                <option value="Engagement">Engagement</option>
+                <option value="Birthday">Birthday</option>
+                <option value="Party">Party</option>
+                <option value="College Event">College Event</option>
+                <option value="Casual">Casual</option>
+                <option value="Traditional">Traditional</option>
+                <option value="Formal">Formal</option>
+              </select>
+              <span class="field-sticker" aria-hidden="true">
+                <img src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/72x72/1f48d.png" alt="">
+              </span>
+            </label>
+
+            <label class="illustrated-field">
+              Jewelry Style
+              <select id="jewelryStyle">
+                <option value="Traditional">Traditional</option>
+                <option value="Modern">Modern</option>
+                <option value="Minimal">Minimal</option>
+                <option value="Bridal">Bridal</option>
+                <option value="Elegant">Elegant</option>
+                <option value="Statement">Statement</option>
+              </select>
+              <span class="field-sticker" aria-hidden="true">
+                <img src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/72x72/2728.png" alt="">
+              </span>
+            </label>
+          </div>
+
+          <div class="form-section">
+            <span class="step">02</span>
+            <div>
+              <h2>Outfit Image <em>(optional)</em></h2>
+              <p class="muted">Upload your saree, dress, or sherwani for visual color and neckline pairing.</p>
+            </div>
+          </div>
+          <label class="upload-box" for="jewelryImage">
+            <input id="jewelryImage" type="file" accept=".jpg,.jpeg,.png,.webp">
+            <span class="upload-icon">↑</span>
+            <strong>Drop or browse your outfit image</strong>
+            <small>JPG, PNG, or WEBP under 8 MB</small>
+            <img id="imagePreview" alt="Outfit preview">
+          </label>
+
+          <button class="primary-btn full" type="submit">
+            Generate Jewelry Matches <span>✦</span>
+          </button>
+        </div>
+
+        <div class="panel planner-info jewel-info">
+          <div class="info-orb">◇</div>
+          <span class="eyebrow">MULTIMODAL STYLIST</span>
+          <h2>Harmonize metals, cuts and stones.</h2>
+          <p>Gemini analyzes fabric tones, neckline cuts, and occasion requirements to suggest timeless jewelry combinations.</p>
+          <div class="mini-rule">
+            <span>Multimodal Vision</span>
+            <span>Color Harmonized</span>
+            <span>Hallmark Guided</span>
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <!-- SECTION 5: PLAN HISTORY -->
+    <section id="page-history" class="page">
+      <div class="page-heading compact">
+        <div>
+          <span class="eyebrow">YOUR PLANS</span>
+          <h1>Plan History.</h1>
+          <p>Review, filter, inspect, or manage all your past AI planning sessions.</p>
+        </div>
+        <button id="clearHistory" class="ghost-btn">Clear all</button>
+      </div>
+
+      <div class="panel">
+        <div class="history-toolbar">
+          <input id="historySearch" placeholder="Search plans by keyword, venue, rooms...">
+          <select id="historyFilter">
+            <option value="all">All Planners</option>
+            <option value="home">Home Interior</option>
+            <option value="party">Party & Events</option>
+            <option value="jewelry">Jewelry Match</option>
+          </select>
+        </div>
+        <div id="historyList" class="history-list"></div>
+      </div>
+    </section>
+
+    <!-- SECTION 6: HOW IT WORKS -->
+    <section id="page-howItWorks" class="page">
+      <div class="page-heading compact">
+        <div>
+          <span class="eyebrow">HOW POCKETSMART WORKS</span>
+          <h1>Intelligent Planning in 6 Steps.</h1>
+          <p>From initial budget idea to actionable, category-wise allocation in seconds.</p>
+        </div>
+      </div>
+
+      <div class="steps-grid" style="grid-template-columns: repeat(3, 1fr);">
+        <div class="step-card">
+          <span>01</span>
+          <h2>Choose a Planner</h2>
+          <p>Select Home Interior for room renovations, Party Planner for festive events, or Jewelry Match for styled accessories.</p>
+        </div>
+        <div class="step-card">
+          <span>02</span>
+          <h2>Enter Your Budget</h2>
+          <p>Set a comfortable total limit in Indian Rupees (₹). PocketSmart enforces strict budget adherence without unexpected overages.</p>
+        </div>
+        <div class="step-card">
+          <span>03</span>
+          <h2>Add Requirements</h2>
+          <p>Select target rooms, item counts, guest numbers, priority services, or upload an outfit photo for visual analysis.</p>
+        </div>
+        <div class="step-card">
+          <span>04</span>
+          <h2>Gemini AI Analysis</h2>
+          <p>The FastAPI backend sends your parameters to Google Gemini with structured financial schemas for balanced category distribution.</p>
+        </div>
+        <div class="step-card">
+          <span>05</span>
+          <h2>Review Your Plan</h2>
+          <p>Examine percentage progress bars, itemized rupee allocations, specific jewelry picks, and money-saving tips.</p>
+        </div>
+        <div class="step-card">
+          <span>06</span>
+          <h2>Save & Revisit</h2>
+          <p>Plans are stored safely in local browser storage so you can compare multiple scenarios, search history, and track spending.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+{% endblock %}
